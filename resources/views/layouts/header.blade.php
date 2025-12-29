@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+@php
+    $settings = \App\Models\SiteSetting::first();
+@endphp
+<html lang="zxx">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/owl.theme.default.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/scrollCue.min.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/remixicon.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
+
+        <title>Andora - Real Estate Bootstrap 5 Template</title>
+
+        <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
+    </head>
+
+    <body>
+
+        <!-- Start Preloader Area -->
+        <div class="preloader-area text-center position-fixed top-0 bottom-0 start-0 end-0" id="preloader">
+            <div class="loader position-absolute start-0 end-0">
+                <img src="{{ asset('assets/images/favicon.png') }}" alt="favicon">
+                <div class="waviy position-relative">
+                    <span class="d-inline-block">A</span>
+                    <span class="d-inline-block">N</span>
+                    <span class="d-inline-block">D</span>
+                    <span class="d-inline-block">O</span>
+                    <span class="d-inline-block">R</span>
+                    <span class="d-inline-block">A</span>
+                </div>
+            </div>
+        </div>
+        <!-- End Preloader Area -->
+
+        <!-- Start Top Header Area -->
+        <div class="top-header-area">
+            <div class="container-fluid">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-lg-7 col-md-7">
+                        <ul class="top-header-info-with-social">
+                            <li>
+                                <div class="social">
+                                    <a href="https://www.facebook.com/" target="_blank">
+                                        <i class="ri-facebook-fill"></i>
+                                    </a>
+                                    <a href="https://twitter.com/" target="_blank">
+                                        <i class="ri-twitter-x-line"></i>
+                                    </a>
+                                    <a href="https://www.instagram.com/" target="_blank">
+                                        <i class="ri-instagram-fill"></i>
+                                    </a>
+                                    <a href="https://bd.linkedin.com/" target="_blank">
+                                        <i class="ri-linkedin-fill"></i>
+                                    </a>
+                                    <a href="https://www.youtube.com/" target="_blank">
+                                        <i class="ri-youtube-line"></i>
+                                    </a>
+                                    <a href="https://www.pinterest.com/" target="_blank">
+                                        <i class="ri-pinterest-line"></i>
+                                    </a>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="mail-info">
+                                    <i class="ri-mail-line"></i>
+                                    <a href="mailto:support@demo.com">{{ $settings->email }}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-5 col-md-5 text-end">
+                        <div class="top-header-call-info">
+                            <i class="ri-phone-line"></i>
+                            <a href="tel:00201068710594">+(002) {{ $settings->phone }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Top Header Area -->
