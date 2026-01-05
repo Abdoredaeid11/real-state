@@ -10,7 +10,8 @@ class propertyController extends Controller
 {
     public function leftSidebar(Request $request)
     {
-        $query = Property::with(['type', 'broker', 'images']);
+        $query = Property::with(['type', 'broker', 'images'])
+            ->whereNotIn('status', ['pending', 'off_market']);
         // Apply filters
         $query->typeId($request->property_type);
         $query->city($request->city);
@@ -57,7 +58,11 @@ class propertyController extends Controller
         $properties = $query->paginate(8);
 
         // Popular properties
-        $popularProperties = Property::with(['type', 'broker', 'images'])->latest()->take(6)->get();
+        $popularProperties = Property::with(['type', 'broker', 'images'])
+            ->whereNotIn('status', ['pending', 'off_market'])
+            ->latest()
+            ->take(6)
+            ->get();
 
         // Property types for sidebar
         $propertyTypes = PropertyType::all();

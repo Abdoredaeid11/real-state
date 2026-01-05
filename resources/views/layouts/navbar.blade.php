@@ -1,8 +1,8 @@
         <!-- Start Navbar Area -->
         <nav class="navbar navbar-expand-xl" id="navbar">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{{ route('home.index') }}">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo">
+                <a class="navbar-brand" href="{{ route('home.index') }}" >
+                    <img src="{{ asset('assets/images/logo-original.png') }}" alt="logo" style="width: 125px">
                 </a>
                 <form class="search-form">
                     <input type="text" class="search-field" placeholder="Search property">
@@ -18,37 +18,57 @@
                     </span>
                 </button>
                 <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a href="{{ url('/') }}" class="nav-link active">
-                                Home
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('properties.leftSidebar') }}" class="nav-link">
-                                Property
-                            </a>
-                        </li>
+                  <ul class="navbar-nav ms-auto">
+    <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+        <a href="{{ url('/') }}" class="nav-link">
+            Home
+        </a>
+    </li>
 
-                        <li class="nav-item">
-                            <a href="javascript:void(0)" class="dropdown-toggle nav-link">
-                                Blog
-                                </i>
-                            </a>
+    <li class="nav-item {{ request()->routeIs('properties.*') ? 'active' : '' }}">
+        <a href="{{ route('properties.leftSidebar') }}" class="nav-link">
+            Property
+        </a>
+    </li>
 
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('contact.index') }}" class="nav-link">Contact Us</a>
-                        </li>
-                    </ul>
+    <li class="nav-item {{ request()->routeIs('blogs.*') ? 'active' : '' }}">
+        <a href="{{ route('blogs.index') }}" class="nav-link">
+            Blog
+        </a>
+    </li>
+
+    <li class="nav-item {{ request()->routeIs('contact.*') ? 'active' : '' }}">
+        <a href="{{ route('contact.index') }}" class="nav-link">
+            Contact Us
+        </a>
+    </li>
+</ul>
+
                     <div class="others-option d-flex align-items-center">
                         <div class="option-item">
                             <div class="user-info">
-                                <a href="my-account.html">Log In / Register</a>
+                                @auth
+         @php
+                                        $user = auth()->user();
+                                        $locale = app()->getLocale();
+                                    @endphp
+                                    @if ($user->role === 'admin')
+                                        <a href="{{ route('admin.dashboard', $locale) }}">My Account</a>
+                                    @elseif ($user->role === 'broker')
+                                        <a href="{{ route('broker.dashboard', $locale) }}">My Account</a>
+                                    @else
+                                        <a href="{{ route('dashboard') }}">My Account</a>
+                                    @endif                                    <form action="{{ route('logout') }}" method="POST" style="display:inline-block; margin-left: 12px;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-link p-0 m-0 align-baseline">Logout</button>
+                                    </form>
+                                @else
+                                    <a href="{{ route('login') }}">Log In / Register</a>
+                                @endauth
                             </div>
                         </div>
                         <div class="option-item">
-                            <a href="contact-us.html" class="default-btn">Contact Us</a>
+                            <a href="{{ route('contact.index') }}" class="default-btn">Contact Us</a>
                         </div>
                     </div>
                 </div>
@@ -60,7 +80,7 @@
         <div class="responsive-navbar offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvas">
             <div class="offcanvas-header">
                 <a href="index.html" class="logo d-inline-block">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="logo">
+                    <img src="{{ asset('assets/images/aqarx2.png') }}" alt="logo" style="width: 125px">
                 </a>
                 <button type="button" data-bs-dismiss="offcanvas" aria-label="Close" class="close-btn">
                     <i class="ri-close-line"></i>
@@ -172,9 +192,15 @@
                                         </a>
                                     </div>
                                     <div class="accordion-item">
-                                        <a href="my-account.html" class="accordion-link">
-                                            My Account
-                                        </a>
+                                                @auth
+                                            <a href="{{ route('dashboard') }}" class="accordion-link">
+                                                My Account
+                                            </a>
+                                        @else
+                                            <a href="{{ route('login') }}" class="accordion-link">
+                                                My Account
+                                            </a>
+                                        @endauth
                                     </div>
                                     <div class="accordion-item">
                                         <a href="privacy-policy.html" class="accordion-link">
@@ -336,7 +362,7 @@
                 <div class="others-option">
                     <div class="option-item">
                         <div class="user-info">
-                            <a href="my-account.html">Log In / Register</a>
+                            <a href="{{ route('login') }}">Log In / Register</a>
                         </div>
                     </div>
                     <div class="option-item">

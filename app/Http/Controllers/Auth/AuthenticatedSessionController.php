@@ -20,6 +20,11 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 
+    public function createAdminForm(): View
+    {
+        return view('admin.auth.login');
+    }
+
     /**
      * Handle an incoming authentication request.
      */
@@ -31,15 +36,26 @@ class AuthenticatedSessionController extends Controller
         $user = auth()->user();
 
         if ($user->role === 'admin') {
-            return redirect()->intended('/admin/dashboard');
+            $locale = app()->getLocale();
+            return redirect()->intended(route('admin.dashboard', $locale));
         }
 
         if ($user->role === 'broker') {
-            return redirect()->intended('/broker/dashboard');
+            $locale = app()->getLocale();
+            return redirect()->intended(route('broker.dashboard', $locale));
         }
 
         // المستخدم العادي
-        return redirect()->intended('/account');
+        return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
+    public function storeAdminLogin(LoginRequest $request): RedirectResponse
+    {
+        $request->merge(['role' => 'admin']);
+        $request->authenticate();
+        $request->session()->regenerate();
+        $locale = app()->getLocale();
+        return redirect()->intended(route('admin.dashboard', $locale));
     }
 
     /**

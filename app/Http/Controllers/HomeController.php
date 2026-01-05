@@ -38,7 +38,7 @@ class HomeController extends Controller
 
         $categories = Category::withCount('properties')->get();
         $latestProperties = Property::with(['category', 'type', 'images', 'broker'])
-            ->where('status', '!=', 'sold')
+            ->whereNotIn('status', ['pending', 'off_market', 'sold'])
             ->latest()
             ->take(6)
             ->get();
@@ -46,7 +46,7 @@ class HomeController extends Controller
         $sales = Property::with(['category', 'type', 'images', 'broker'])
             ->withCount('images')
             ->where('type', 'sale')
-            ->where('status', '!=', 'sold')
+            ->whereNotIn('status', ['pending', 'off_market', 'sold'])
             ->latest()
             ->take(6)
             ->get();
@@ -68,7 +68,8 @@ class HomeController extends Controller
         // Read which tab the user used (sell/rent/invest)
         $tab = $request->input('tab');
 
-        $query = Property::query();
+        $query = Property::query()
+            ->whereNotIn('status', ['pending', 'off_market']);
 
         // Apply tab-level filter mapping to property `type`
         if ($tab) {
@@ -106,11 +107,6 @@ class HomeController extends Controller
             $query->where('price', '<=', $request->price_max);
         }
 
-        // Status
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
         // Get filtered properties
         $properties = $query->with(['category', 'type', 'images', 'broker'])->paginate(9);;
         // Return to view (or JSON if using AJAX)
@@ -120,6 +116,7 @@ class HomeController extends Controller
     {
         $properties = Property::with(['category', 'type', 'images', 'broker'])
             ->where('category_id', $id)
+            ->whereNotIn('status', ['pending', 'off_market'])
             ->latest()
             ->paginate(9); // لو عايز pagination
 
@@ -134,11 +131,14 @@ class HomeController extends Controller
      */
     public function propertyDetails($id)
     {
-        $property = Property::with(['images', 'broker', 'category', 'type'])->findOrFail($id);
+        $property = Property::with(['images', 'broker', 'category', 'type'])
+            ->whereNotIn('status', ['pending', 'off_market'])
+            ->findOrFail($id);
 
         $related = Property::with('images')
             ->where('category_id', $property->category_id)
             ->where('id', '!=', $property->id)
+            ->whereNotIn('status', ['pending', 'off_market'])
             ->latest()
             ->take(4)
             ->get();
@@ -192,4 +192,8 @@ class HomeController extends Controller
         // Redirect back with success message
         return redirect()->back()->with('success', 'Your message has been sent successfully!');
     }   
+        public function blogs(){
+        $blogs = Blog::where('status', 'published')->paginate(10);
+        return view('blogs.index', compact('blogs'));
+    }
 }

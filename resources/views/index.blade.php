@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
     <!-- End Responsive Navbar Area -->
-
+       
     <!-- Start Main Banner Area -->
     <div class="main-banner-area">
         <div class="container-fluid">
@@ -122,7 +122,7 @@
                             @foreach ($banners as $banner)
                                 <div class="swiper-slide">
                                     <div class="main-banner-image">
-                                        <img src="{{ asset('storage/' . $banner->image) }}" alt="image">
+                                        <img src="{{ asset('storage/' . $banner->image) }}" alt="image" style="height:590px">
                                     </div>
                                 </div>
                             @endforeach

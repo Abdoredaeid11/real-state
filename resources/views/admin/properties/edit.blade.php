@@ -127,6 +127,15 @@
             <input type="number" name="area" class="form-control" value="{{ old('area', $property->area) }}">
         </div>
         <div class="mb-3">
+            <label class="form-label">{{ __('admin.forms.image') }} (Floor Plan)</label>
+            <input type="file" name="floor_plan" class="form-control">
+            @if($property->floor_plan)
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $property->floor_plan) }}" alt="Floor Plan" style="max-height:120px; border-radius:6px;">
+                </div>
+            @endif
+        </div>
+        <div class="mb-3">
             <label class="form-label d-flex justify-content-between">
                 <span>{{ __('admin.forms.existing_images') }}</span>
                 <small class="text-muted">{{ __('admin.forms.select_to_remove') }}</small>

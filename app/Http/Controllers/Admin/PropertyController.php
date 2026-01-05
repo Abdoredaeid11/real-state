@@ -65,11 +65,17 @@ class PropertyController extends Controller
             "bathrooms" => ["required","integer","min:0"],
             "area"=> ["required","numeric","min:0"],
             "broker_id"=> ["nullable","integer","exists:users,id"],
+            "floor_plan" => ["nullable","image","mimes:jpeg,png,jpg,webp","max:4096"],
             "images" => ["nullable","array"],
             "images.*" => ["image","mimes:jpeg,png,jpg,webp","max:2048"],
             "feature_ids" => ["nullable","array"],
             "feature_ids.*" => ["integer","exists:features,id"],
         ]);
+
+        if ($request->hasFile('floor_plan')) {
+            $floorPlanPath = $request->file('floor_plan')->store('properties/floor_plans', 'public');
+            $validated['floor_plan'] = $floorPlanPath;
+        }
 
         $property = Property::create($validated);
 
@@ -104,66 +110,83 @@ class PropertyController extends Controller
         return view('admin.properties.edit', compact('property', 'types', 'categories', 'brokers','features'));
     }
 
-    public function update(Request $request, $locale, $id)
-    {
-        $validated = $request->validate([
-            "title"=> "required|string|max:255",
-            "title_ar"=> "nullable|string|max:255",
-            "description"=> "required|string",
-            "description_ar"=> "nullable|string",
-            "price"=>"required|numeric|min:0",
-            "type"=>["required","string", Rule::in(['sale','rent','invest'])],
-            "status"=>["required","string", Rule::in(['available','pending','sold','rented','off_market'])],
-            "property_type_id"=>["required","integer","exists:property_types,id"],
-            "category_id" => ["nullable", "integer", "exists:categories,id"],
-            "city"=>["required","string","max:255"],
-            "city_ar"=> "nullable|string|max:255",
-            "address"=>["required","string","max:255"],
-            "address_ar"=> "nullable|string|max:255",
-            "bedrooms"=>["required","integer","min:0"],
-            "bathrooms" => ["required","integer","min:0"],
-            "area"=> ["required","numeric","min:0"],
-            "broker_id"=> ["nullable","integer","exists:users,id"],
-            "images" => ["nullable","array"],
-            "images.*" => ["image","mimes:jpeg,png,jpg,webp","max:2048"],
-            "remove_images" => ["nullable","array"],
-            "remove_images.*" => ["integer","exists:property_images,id"],
-            "feature_ids" => ["nullable","array"],
-            "feature_ids.*" => ["integer","exists:features,id"],
-        ]);
+public function update(Request $request, $locale, $id)
+{
+    $validated = $request->validate([
+        "title"=> "required|string|max:255",
+        "title_ar"=> "nullable|string|max:255",
+        "description"=> "required|string",
+        "description_ar"=> "nullable|string",
+        "price"=>"required|numeric|min:0",
+        "type"=>["required","string", Rule::in(['sale','rent','invest'])],
+        "status"=>["required","string", Rule::in(['available','pending','sold','rented','off_market'])],
+        "property_type_id"=>["required","integer","exists:property_types,id"],
+        "category_id" => ["nullable", "integer", "exists:categories,id"],
+        "city"=>["required","string","max:255"],
+        "city_ar"=> "nullable|string|max:255",
+        "address"=>["required","string","max:255"],
+        "address_ar"=> "nullable|string|max:255",
+        "bedrooms"=>["required","integer","min:0"],
+        "bathrooms" => ["required","integer","min:0"],
+        "area"=> ["required","numeric","min:0"],
+        "broker_id"=> ["nullable","integer","exists:users,id"],
+        "floor_plan" => ["nullable","image","mimes:jpeg,png,jpg,webp","max:4096"],
+        "images" => ["nullable","array"],
+        "images.*" => ["image","mimes:jpeg,png,jpg,webp","max:2048"],
+        "remove_images" => ["nullable","array"],
+        "remove_images.*" => ["integer","exists:property_images,id"],
+        "feature_ids" => ["nullable","array"],
+        "feature_ids.*" => ["integer","exists:features,id"],
+    ]);
 
-        $property = Property::findOrFail($id);
-        $property->update($validated);
+    $property = Property::findOrFail($id);
+    $broker_id = $property->broker_id;
 
-        // Sync features
-        $featureIds = $request->input('feature_ids', []);
-        $property->features()->sync($featureIds);
-
-        // Remove selected images
-        $removeImages = $request->input('remove_images', []);
-        if (!empty($removeImages)) {
-            $imagesToDelete = $property->images()->whereIn('id', $removeImages)->get();
-            foreach ($imagesToDelete as $image) {
-                if (Storage::disk('public')->exists($image->image)) {
-                    Storage::disk('public')->delete($image->image);
-                }
-                $image->delete();
-            }
+    if ($request->hasFile('floor_plan')) {
+        if ($property->floor_plan && Storage::disk('public')->exists($property->floor_plan)) {
+            Storage::disk('public')->delete($property->floor_plan);
         }
-
-        // Handle property images
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('properties', 'public');
-                PropertyImage::create([
-                    'property_id' => $property->id,
-                    'image' => $path
-                ]);
-            }
-        }
-
-        return redirect()->route("admin.properties.index", ['locale' => app()->getLocale()])->with("success","Property Updated Successfully!");
+        $floorPlanPath = $request->file('floor_plan')->store('properties/floor_plans', 'public');
+        $validated['floor_plan'] = $floorPlanPath;
     }
+
+    // >>> keep old broker if form sends empty broker_id
+    if (!array_key_exists('broker_id', $validated) || $validated['broker_id'] === null) {
+        $validated['broker_id'] = $broker_id;
+    }
+
+    $property->update($validated);
+
+    // Sync features
+    $featureIds = $request->input('feature_ids', []);
+    $property->features()->sync($featureIds);
+
+    // Remove selected images
+    $removeImages = $request->input('remove_images', []);
+    if (!empty($removeImages)) {
+        $imagesToDelete = $property->images()->whereIn('id', $removeImages)->get();
+        foreach ($imagesToDelete as $image) {
+            if (Storage::disk('public')->exists($image->image)) {
+                Storage::disk('public')->delete($image->image);
+            }
+            $image->delete();
+        }
+    }
+
+    // Handle property images
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $image) {
+            $path = $image->store('properties', 'public');
+            PropertyImage::create([
+                'property_id' => $property->id,
+                'image' => $path
+            ]);
+        }
+    }
+
+    return redirect()->route("admin.properties.index", ['locale' => app()->getLocale()])
+        ->with("success","Property Updated Successfully!");
+}
 
     public function destroy($locale, $id)
     {

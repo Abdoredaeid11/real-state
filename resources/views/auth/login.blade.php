@@ -1,275 +1,197 @@
-    <!DOCTYPE html>
-    <html lang="en" dir="ltr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login | Admin Panel</title>
+@extends('layouts.master')
+@section('content')
 
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-        <style>
-            * {
-                font-family: 'Inter', sans-serif;
-            }
-
-            body {
-                min-height: 100vh;
-                background: #f1f5f9; /* خلفية مريحة */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
-            }
-
-            .login-card {
-                width: 100%;
-                max-width: 420px;
-                background: #ffffff;
-                border-radius: 18px;
-                box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-                overflow: hidden;
-            }
-
-            .login-card::before {
-                content: '';
-                display: block;
-                height: 5px;
-                background: linear-gradient(90deg, #6366f1, #3b82f6);
-            }
-
-            .login-header {
-                padding: 30px;
-                text-align: center;
-            }
-
-            .logo {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 12px;
-                margin-bottom: 8px;
-            }
-
-            .logo-icon {
-                width: 44px;
-                height: 44px;
-                background: #6366f1;
-                color: #fff;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 20px;
-            }
-
-            .logo-text {
-                font-size: 22px;
-                font-weight: 700;
-                color: #1e293b;
-            }
-
-            .subtitle {
-                font-size: 14px;
-                color: #64748b;
-            }
-
-            .login-body {
-                padding: 30px;
-            }
-
-            .form-group {
-                margin-bottom: 22px;
-            }
-
-            .form-label {
-                display: block;
-                margin-bottom: 6px;
-                font-size: 14px;
-                font-weight: 600;
-                color: #334155;
-            }
-
-            .input-wrapper {
-                position: relative;
-            }
-
-            .input-wrapper i {
-                position: absolute;
-                left: 14px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #94a3b8;
-            }
-
-            .form-control {
-                width: 100%;
-                padding: 14px 14px 14px 42px;
-                border-radius: 10px;
-                border: 1px solid #cbd5e1;
-                font-size: 15px;
-                color: #1e293b;
-                transition: all .2s ease;
-            }
-
-            .form-control:focus {
-                outline: none;
-                border-color: #6366f1;
-                box-shadow: 0 0 0 3px rgba(99,102,241,.15);
-            }
-
-            .input-error {
-                margin-top: 5px;
-                font-size: 13px;
-                color: #ef4444;
-            }
-
-            .remember-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 25px;
-            }
-
-            .remember-me {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                font-size: 14px;
-                color: #334155;
-            }
-
-            .remember-me input {
-                accent-color: #6366f1;
-            }
-
-            .forgot {
-                font-size: 14px;
-                color: #6366f1;
-                text-decoration: none;
-            }
-
-            .forgot:hover {
-                text-decoration: underline;
-            }
-
-            .login-btn {
-                width: 100%;
-                padding: 14px;
-                background: #6366f1;
-                color: #fff;
-                border: none;
-                border-radius: 10px;
-                font-size: 16px;
-                font-weight: 600;
-                cursor: pointer;
-                transition: background .2s ease;
-            }
-
-            .login-btn:hover {
-                background: #4f46e5;
-            }
-
-            .alert {
-                padding: 14px;
-                border-radius: 10px;
-                margin-bottom: 20px;
-                font-size: 14px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .alert-success {
-                background: #ecfdf5;
-                color: #047857;
-            }
-
-            .alert-error {
-                background: #fef2f2;
-                color: #b91c1c;
-            }
-
-            .footer {
-                text-align: center;
-                font-size: 13px;
-                color: #94a3b8;
-                padding-bottom: 20px;
-            }
-        </style>
-    </head>
-    <body>
-
-    <div class="login-card">
-        <div class="login-header">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-building"></i>
+        <!-- Start Page Banner Area -->
+        <div class="page-banner-area">
+            <div class="container">
+                <div class="page-banner-content">
+                    <h2>Login / Register</h2>
+                    <ul class="list">
+                        <li>
+                            <a href="index.html">Home</a>
+                        </li>
+                        <li>Account</li>
+                    </ul>
                 </div>
-                <div class="logo-text">Admin Panel</div>
             </div>
-            <div class="subtitle">Sign in to continue</div>
         </div>
+        <!-- End Page Banner Area -->
 
-        <div class="login-body">
-
-            @if (session('status'))
-                <div class="alert alert-success">
-                    <i class="fas fa-check-circle"></i> {{ session('status') }}
-                </div>
-            @endif
-
-            @if (session('error'))
-                <div class="alert alert-error">
-                    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-                </div>
-            @endif
-
-            <form method="POST" action="{{ route('login') }}">
-                @csrf
-
-                <div class="form-group">
-                    <label class="form-label">Email</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
+        <!-- Start Profile Authentication Area -->
+        <div class="profile-authentication-area ptb-120">
+            <div class="container">
+                <div class="profile-authentication-inner">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="profile-authentication-box">
+                                <div class="content">
+                                    <h3>Sign In</h3>
+                                    <p>Don't have an account yet? <a href="{{ route('register') }}">Sign up here</a></p>
+                                </div>
+                                <form class="authentication-form" action="{{ Route::currentRouteNamed('admin.login.form') ? route('admin.login') : route('login') }}" method="POST">
+                                    @csrf
+                                    <div class="google-btn">
+                                        <button type="submit"><img src="assets/images/google.svg" alt="google">Sign in with Google</button>
+                                    </div>
+                                    <div class="or">
+                                        <span>OR</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        <input type="email" name="email" class="form-control" placeholder="Enter email address" value="{{ old('email') }}" required>
+                                        <div class="icon">
+                                            <i class="ri-mail-line"></i>
+                                        </div>
+                                    </div>
+                                    @if(Route::currentRouteNamed('admin.login.form'))
+                                        <input type="hidden" name="role" value="admin">
+                                    @else
+                                        <div class="form-group">
+                                            <label>Account Type</label>
+                                            <select name="role" class="form-control">
+                                                <option value="user" {{ old('role') === 'broker' ? '' : 'selected' }}>User</option>
+                                                <option value="broker" {{ old('role') === 'broker' ? 'selected' : '' }}>Broker</option>
+                                            </select>
+                                            <div class="icon">
+                                                <i class="ri-user-settings-line"></i>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    <div class="form-group">
+                                        <label>Your Password</label>
+                                        <input type="password" name="password" class="form-control" placeholder="Your password" required>
+                                        <div class="icon">
+                                            <i class="ri-lock-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-bottom d-flex justify-content-between">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="remember-me" name="remember">
+                                            <label class="form-check-label" for="remember-me">
+                                                Remember me
+                                            </label>
+                                        </div>
+                                        <a href="{{ route('password.request') }}" class="forgot-password">
+                                            Forgot your password?
+                                        </a>
+                                    </div>
+                                    <button type="submit" class="default-btn">Sign In</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="profile-authentication-box with-gap">
+                                <div class="content">
+                                    <h3>Create Your Account</h3>
+                                    <p>Already have an account? <a href="{{ route('login') }}">Sign in here</a></p>
+                                </div>
+                                <form class="authentication-form" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="google-btn">
+                                        <button type="submit"><img src="assets/images/google.svg" alt="google">Sign in with Google</button>
+                                    </div>
+                                    <div class="or">
+                                        <span>OR</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Your Name</label>
+                                        <input type="text" name="name" class="form-control" placeholder="Enter name" value="{{ old('name') }}" required>
+                                        <div class="icon">
+                                            <i class="ri-user-3-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email Address</label>
+                                        <input type="email" name="email" class="form-control" placeholder="Enter email address" value="{{ old('email') }}" required>
+                                        <div class="icon">
+                                            <i class="ri-mail-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Account Type</label>
+                                        <select id="inline-register-role" name="role" class="form-control">
+                                            <option value="user" {{ old('role') === 'broker' ? '' : 'selected' }}>User</option>
+                                            <option value="broker" {{ old('role') === 'broker' ? 'selected' : '' }}>Broker</option>
+                                        </select>
+                                        <div class="icon">
+                                            <i class="ri-user-settings-line"></i>
+                                        </div>
+                                    </div>
+                                    <div id="inline-register-broker-kyc" style="{{ old('role') === 'broker' ? '' : 'display:none' }}">
+                                        <div class="form-group">
+                                            <label>ID Image</label>
+                                            <input type="file" id="inline-register-id-image" name="id_image" class="form-control" accept="image/*">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Selfie with ID</label>
+                                            <input type="file" id="inline-register-selfie-image" name="selfie_image" class="form-control" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Your Password</label>
+                                        <input type="password" name="password" class="form-control" placeholder="Your password" required>
+                                        <div class="icon">
+                                            <i class="ri-lock-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Confirm Password</label>
+                                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm password" required>
+                                        <div class="icon">
+                                            <i class="ri-lock-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="form-bottom">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="checkbox1">
+                                            <label class="form-check-label" for="checkbox1">
+                                                I accept the <a href="terms-conditions.html">Terms and Conditions</a>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="default-btn">Sign Up</button>
+                                </form>
+                                <script>
+                                    const inlineRole = document.getElementById('inline-register-role');
+                                    const inlineKyc = document.getElementById('inline-register-broker-kyc');
+                                    const inlineId = document.getElementById('inline-register-id-image');
+                                    const inlineSelfie = document.getElementById('inline-register-selfie-image');
+                                    function toggleInlineKyc(){
+                                        if(inlineRole.value === 'broker'){
+                                            inlineKyc.style.display = '';
+                                            if(inlineId) inlineId.required = true;
+                                            if(inlineSelfie) inlineSelfie.required = true;
+                                        }else{
+                                            inlineKyc.style.display = 'none';
+                                            if(inlineId) inlineId.required = false;
+                                            if(inlineSelfie) inlineSelfie.required = false;
+                                        }
+                                    }
+                                    inlineRole.addEventListener('change', toggleInlineKyc);
+                                    toggleInlineKyc();
+                                </script>
+                            </div>
+                        </div>
                     </div>
-                    @error('email')
-                    <div class="input-error">{{ $message }}</div>
-                    @enderror
                 </div>
+            </div>
+        </div>
+        <!-- End Profile Authentication Area -->
 
-                <div class="form-group">
-                    <label class="form-label">Password</label>
-                    <div class="input-wrapper">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" name="password" class="form-control" required>
+        <!-- Start Subscribe Area -->
+        <div class="subscribe-wrap-area">
+            <div class="container" data-cues="slideInUp">
+                <div class="subscribe-wrap-inner-area">
+                    <div class="subscribe-content">
+                        <h2>Subscribe To Our Newsletter</h2>
+                        <form class="subscribe-form">
+                            <input type="search" class="form-control" placeholder="Enter your email">
+                            <button type="submit" class="default-btn">Subscribe</button>
+                        </form>
                     </div>
-                    @error('password')
-                    <div class="input-error">{{ $message }}</div>
-                    @enderror
                 </div>
-
-                <div class="remember-row">
-                    <label class="remember-me">
-                        <input type="checkbox" name="remember">
-                        Remember me
-                    </label>
-                    <a href="{{ route('password.request') }}" class="forgot">Forgot password?</a>
-                </div>
-
-                <button type="submit" class="login-btn">
-                    Log in
-                </button>
-            </form>
-
+            </div>
         </div>
+        <!-- End Subscribe Area -->
 
-        <div class="footer">
-            © {{ date('Y') }} Admin Panel
-        </div>
-    </div>
-
-    </body>
-    </html>
+      @endsection

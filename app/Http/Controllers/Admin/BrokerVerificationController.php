@@ -16,7 +16,7 @@ class BrokerVerificationController extends Controller
         $verifications = BrokerVerification::with('user')->latest()->paginate(10);
         return view('admin.broker_verifications.index', compact('verifications'));
     }
-    public function approve($id)
+    public function approve($locale, $id)
     {
         $verification = BrokerVerification::findOrFail($id);
         $verification->update([
@@ -28,7 +28,7 @@ class BrokerVerificationController extends Controller
         $verification->user->update(['role' => 'broker']);
         return redirect()->back()->with('success', 'Broker approved successfully!');
     }
-        public function reject(Request $request, $id)
+        public function reject(Request $request, $locale, $id)
     {
         $request->validate([
             'rejection_reason' => ['nullable','string','max:1000'],

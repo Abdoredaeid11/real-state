@@ -13,16 +13,24 @@ class RoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,...$roles): Response
- {
-    if (!auth()->check()) {
-        abort(403, 'Not authenticated');
-    }
+    public function handle(Request $request, Closure $next, ...$roles): Response
+    {
+        if (!auth()->check()) {
+            if (in_array('admin', $roles, true)) {
+                return redirect()->route('admin.login.form');
+            }
 
-    if (!in_array(auth()->user()->role, $roles)) {
-        abort(403, 'Not allowed');
-    }
+            return redirect()->route('login');
+        }
 
-    return $next($request);
-}
+        if (!in_array(auth()->user()->role, $roles)) {
+            if (in_array('admin', $roles, true)) {
+                return redirect()->route('admin.login.form');
+            }
+
+            abort(403, 'Not allowed');
+        }
+
+        return $next($request);
+    }
 }

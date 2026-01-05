@@ -13,6 +13,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AgentController as AdminAgentController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
+use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\Broker\DashboardController as BrokerDashboardController;
+use App\Http\Controllers\Broker\PropertyController as BrokerPropertyController;
+use App\Http\Controllers\Broker\ReservationController as BrokerReservationController;
+use App\Http\Controllers\Broker\PaymentController as BrokerPaymentController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +44,7 @@ Route::post('/reservations', [\App\Http\Controllers\ReservationController::class
 Route::get('/blog/{slug}', [HomeController::class, 'blogDetails'])->name('blog.show');
 Route::get('/Properties/{id}',[HomeController::class,'propertiesByCategory'])->name('category.properties');
 Route::get('çontact-us', [HomeController::class, 'contactUs'])->name('contact.index');
+Route::get('/blogs',[HomeController::class,'blogs'])->name('blogs.index');
 Route::post('çontact-us', [HomeController::class, 'sendContactMessage'])->name('contact.send');
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -150,17 +156,35 @@ Route::prefix('{locale}/admin')
 });
 
 // Backward compatible admin routes without locale -> redirect to default locale
+// Exclude /admin/login so that guest admin login works correctly
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/{any?}', function () {
         $locale = config('app.locale', 'ar');
         $path = request()->path(); // e.g. admin/dashboard
         $suffix = str_replace('admin', '', $path);
         return redirect("/{$locale}/admin{$suffix}");
-    })->where('any', '.*');
+    })->where('any', '^(?!login$).*');
 });
 
 // للـ broker فقط
+Route::prefix('{locale}/broker')
+    ->whereIn('locale', ['ar', 'en'])
+    ->as('broker.')
+    ->middleware(['setlocale', 'auth', 'role:broker'])
+    ->group(function () {
+        Route::get('/dashboard', [BrokerDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/properties', [BrokerPropertyController::class, 'index'])->name('properties.index');
+        Route::get('/properties/create', [BrokerPropertyController::class, 'create'])->name('properties.create');
+        Route::post('/properties', [BrokerPropertyController::class, 'store'])->name('properties.store');
+        Route::get('/properties/{id}/edit', [BrokerPropertyController::class, 'edit'])->name('properties.edit');
+        Route::put('/properties/{id}', [BrokerPropertyController::class, 'update'])->name('properties.update');
+        Route::get('/reservations', [BrokerReservationController::class, 'index'])->name('reservations.index');
+        Route::get('/payments', [BrokerPaymentController::class, 'index'])->name('payments.index');
+    });
+
 Route::middleware(['auth', 'role:broker'])->group(function () {
+    Route::get('/broker/kyc', [\App\Http\Controllers\BrokerKycController::class, 'show'])->name('broker.kyc');
+    Route::post('/broker/kyc', [\App\Http\Controllers\BrokerKycController::class, 'store'])->name('broker.kyc.submit');
 });
 
 // للمستخدمين العاديين أو أي دور تاني
@@ -171,5 +195,7 @@ Route::middleware(['auth', 'role:user'])->group(function () {
 Route::middleware(['auth', 'role:admin,broker'])->group(function () {
 });
 
+
+// Auth routes are defined in auth.php (Breeze) to avoid duplication.
 
 require __DIR__ . '/auth.php';

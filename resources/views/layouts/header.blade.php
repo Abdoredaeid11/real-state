@@ -17,9 +17,18 @@
 <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/responsive.css') }}">
 
-        <title>Andora - Real Estate Bootstrap 5 Template</title>
+        <title>Aqar-x - Real Estate Bootstrap 5 Template</title>
 
         <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
+        
+        <style>
+            
+            @media only screen and (max-width: 992px) {
+                .top-header-area {
+                    display: none;
+                }
+            }
+        </style>
     </head>
 
     <body>
@@ -27,14 +36,14 @@
         <!-- Start Preloader Area -->
         <div class="preloader-area text-center position-fixed top-0 bottom-0 start-0 end-0" id="preloader">
             <div class="loader position-absolute start-0 end-0">
-                <img src="{{ asset('assets/images/favicon.png') }}" alt="favicon">
+                <img src="{{ asset('assets/images/aqarx3.png') }}" alt="favicon">
                 <div class="waviy position-relative">
-                    <span class="d-inline-block">A</span>
-                    <span class="d-inline-block">N</span>
-                    <span class="d-inline-block">D</span>
-                    <span class="d-inline-block">O</span>
-                    <span class="d-inline-block">R</span>
-                    <span class="d-inline-block">A</span>
+                    <span class="d-inline-block text-dark">A</span>
+                    <span class="d-inline-block text-dark">Q</span>
+                    <span class="d-inline-block text-dark">A</span>
+                    <span class="d-inline-block text-dark">R</span>
+                    <span class="d-inline-block text-dark">-</span>
+                    <span class="d-inline-block text-dark">X</span>
                 </div>
             </div>
         </div>
@@ -79,7 +88,7 @@
                     <div class="col-lg-5 col-md-5 text-end">
                         <div class="top-header-call-info">
                             <i class="ri-phone-line"></i>
-                            <a href="tel:00201068710594">+(002) {{ $settings->phone }}</a>
+                            <a href="tel:201068710594">+(2) {{ $settings->phone }}</a>
                         </div>
                     </div>
                 </div>

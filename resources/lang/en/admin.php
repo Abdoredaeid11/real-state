@@ -56,6 +56,8 @@ return [
         'payment_date' => 'Payment Date',
         'mark_as' => 'Mark as',
         'view_id' => 'View ID',
+        'view_selfie' => 'View Selfie',
+        'approve' => 'Approve',
         'name' => 'Name',
         'email' => 'Email',
         'role' => 'Role',

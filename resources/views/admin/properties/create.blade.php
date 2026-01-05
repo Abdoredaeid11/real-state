@@ -137,6 +137,10 @@
             <input type="number" name="area" class="form-control" placeholder="{{ __('admin.forms.enter_area') }}">
         </div>
         <div class="mb-3">
+            <label class="form-label">{{ __('admin.forms.image') }} (Floor Plan)</label>
+            <input type="file" name="floor_plan" class="form-control">
+        </div>
+        <div class="mb-3">
             <label class="form-label">{{ __('admin.forms.images') }}</label>
             <input type="file" name="images[]" class="form-control" multiple>
         </div>

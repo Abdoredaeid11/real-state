@@ -49,11 +49,11 @@
                                 <div class="single-footer-widget ps-3">
                                     <h3>Company</h3>
                                     <ul class="custom-links">
-                                        <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="contact-us.html">Contact Us</a></li>
-                                        <li><a href="customers-review.html">Our Reviews</a></li>
-                                        <li><a href="terms-conditions.html">Terms & Conditions</a></li>
-                                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                                        <li><a href="#">About Us</a></li>
+                                        <li><a href="#">Contact Us</a></li>
+                                        <li><a href="#">Our Reviews</a></li>
+                                        <li><a href="#">Terms & Conditions</a></li>
+                                        <li><a href="#">Privacy Policy</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -61,11 +61,11 @@
                                 <div class="single-footer-widget ps-3">
                                     <h3>Resources</h3>
                                     <ul class="custom-links">
-                                        <li><a href="property-grid.html">Apartments</a></li>
-                                        <li><a href="property-grid.html">Villa</a></li>
-                                        <li><a href="property-grid.html">Sell or Buy</a></li>
-                                        <li><a href="property-grid.html">New Apartment</a></li>
-                                        <li><a href="agents.html">Our Agents</a></li>
+                                        <li><a href="#">Apartments</a></li>
+                                        <li><a href="#">Villa</a></li>
+                                        <li><a href="#">Sell or Buy</a></li>
+                                        <li><a href="#">New Apartment</a></li>
+                                        <li><a href="#">Our Agents</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -73,11 +73,11 @@
                                 <div class="single-footer-widget ps-3">
                                     <h3>Quick Links</h3>
                                     <ul class="custom-links">
-                                        <li><a href="pricing.html">Pricing</a></li>
-                                        <li><a href="what-we-do.html">What We Do</a></li>
-                                        <li><a href="customers-review.html">Testimonial</a></li>
-                                        <li><a href="blog-grid.html">Blog</a></li>
-                                        <li><a href="neighborhood.html">Neighborhood</a></li>
+                                        <li><a href="#">Pricing</a></li>
+                                        <li><a href="#">What We Do</a></li>
+                                        <li><a href="#">Testimonial</a></li>
+                                        <li><a href="#">Blog</a></li>
+                                        <li><a href="#l">Neighborhood</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                 </div>
                 <div class="copyright-area">
                     <p>
-                        Copyright <span>{{ $settings && $settings->site_name ? $settings->site_name : 'Andora' }}</span> All Rights Reserved by <a href="https://envytheme.com/" target="_blank">EnvyTheme</a>
+                        Copyright <span>{{ $settings && $settings->site_name ? $settings->site_name : 'AqarX' }}</span> All Rights Reserved by <a href="https://vadecom.net/" target="_blank">Vadecom</a>
                     </p>
                 </div>
             </div>
@@ -124,16 +124,6 @@
         </button>
         <!-- End Back to Top -->
 
-        <!-- Start Lines -->
-        <div class="lines">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
-        <!-- End Lines -->
 
         <!-- Link of JS Files -->
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>

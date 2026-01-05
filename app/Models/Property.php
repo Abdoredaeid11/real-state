@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Property extends Model
 {
@@ -25,9 +26,28 @@ class Property extends Model
         'bedrooms',
         'bathrooms',
         'area',
+        'floor_plan',
         'broker_id',
         'category_id'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($property) {
+            if (Auth::check() && Auth::user()->role === 'broker') {
+                $property->status = 'pending';
+            }
+        });
+
+        static::updating(function ($property) {
+            if (Auth::check() && Auth::user()->role === 'broker') {
+                $property->status = 'pending';
+            }
+        });
+    }
+
+
     public function scopeTypeId($query, $id)
     {
         if ($id) {
