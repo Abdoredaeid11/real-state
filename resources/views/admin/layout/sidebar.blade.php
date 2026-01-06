@@ -155,6 +155,13 @@
                 </a>
             </li>
 
+            <li class="menu-item {{ request()->routeIs('admin.chats.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.chats.index', $locale) }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-chat"></i>
+                    <div data-i18n="Chats">Chats</div>
+                </a>
+            </li>
+
             <!-- Settings -->
             <li class="menu-item {{ request()->routeIs('admin.site-settings.*') ? 'active' : '' }}">
                 <a href="{{ route('admin.site-settings.index', $locale) }}" class="menu-link">

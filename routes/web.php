@@ -14,10 +14,12 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\AgentController as AdminAgentController;
 use App\Http\Controllers\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\Auth\UserAuthController;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Broker\DashboardController as BrokerDashboardController;
 use App\Http\Controllers\Broker\PropertyController as BrokerPropertyController;
 use App\Http\Controllers\Broker\ReservationController as BrokerReservationController;
 use App\Http\Controllers\Broker\PaymentController as BrokerPaymentController;
+use App\Http\Controllers\ChatController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +56,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/messages', [ChatController::class, 'list'])->name('chat.messages');
+    Route::post('/chat/messages', [ChatController::class, 'store'])->name('chat.store');
 });
 
 
@@ -153,6 +159,10 @@ Route::prefix('{locale}/admin')
 
     // Messages
     Route::resource('messages', \App\Http\Controllers\Admin\MessageController::class)->only(['index']);
+
+    Route::get('chats', [AdminChatController::class, 'index'])->name('chats.index');
+    Route::get('chats/messages', [AdminChatController::class, 'list'])->name('chats.messages');
+    Route::post('chats/messages', [AdminChatController::class, 'store'])->name('chats.store');
 });
 
 // Backward compatible admin routes without locale -> redirect to default locale

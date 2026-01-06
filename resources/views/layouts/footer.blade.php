@@ -119,7 +119,7 @@
         <!-- End Footer Area -->
 
         <!-- Back to Top -->
-        <button type="button" id="back-to-top" class="position-fixed text-center border-0 p-0">
+        <button type="button" id="back-to-top" class="position-fixed text-center border-0 p-0" style="display: none;">
             <i class="ri-arrow-up-s-line"></i>
         </button>
         <!-- End Back to Top -->
